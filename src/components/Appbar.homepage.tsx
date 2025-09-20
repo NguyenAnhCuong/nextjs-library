@@ -15,10 +15,8 @@ import {
 import { styled, alpha } from "@mui/material/styles";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import { signIn, useSession } from "next-auth/react";
-import Link from "next/link";
 import { LoginOutlined } from "@mui/icons-material";
 
 const drawerWidth = 240;

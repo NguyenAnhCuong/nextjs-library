@@ -1,4 +1,5 @@
 import AppBarHomePage from "@/components/Appbar.homepage";
+import DetailBook from "@/components/detail.book";
 import DrawerHomePage from "@/components/Drawer.homepage";
 import { Box } from "@mui/material";
 import type { Metadata } from "next";
@@ -23,10 +24,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         </Box>
 
         <Box sx={{ display: "flex" }}>
-          <Box sx={{ border: "1px solid red", width: "70%" }}>
-            {props.children}
+          <Box sx={{ width: "70%" }}>{props.children}</Box>
+          <Box sx={{ width: "30%" }}>
+            <DetailBook />
           </Box>
-          <Box sx={{ border: "1px solid blue", width: "30%" }}></Box>
         </Box>
       </Box>
     </Box>

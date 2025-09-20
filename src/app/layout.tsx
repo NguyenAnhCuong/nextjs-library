@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning={true}>
         <NextAuthWrapper>{props.children}</NextAuthWrapper>
       </body>
     </html>

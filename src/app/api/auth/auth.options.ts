@@ -23,14 +23,17 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(`${process.env.BACKEND_URL}/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({
-              username: credentials?.username || "",
-              password: credentials?.password || "",
-            }),
-          });
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/login`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams({
+                username: credentials?.username || "",
+                password: credentials?.password || "",
+              }),
+            }
+          );
 
           const data = await res.json();
           console.log("Login API response:", data);
