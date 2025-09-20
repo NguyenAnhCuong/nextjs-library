@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, CardMedia, Typography, Button, Rating } from "@mui/material";
+import {
+  Box,
+  CardMedia,
+  Typography,
+  Button,
+  Rating,
+  Divider,
+} from "@mui/material";
 import { useBookContext } from "@/app/context/book.context";
 
 const DetailBook = () => {
@@ -27,6 +34,10 @@ const DetailBook = () => {
       </Box>
     );
   }
+
+  const handleFollowBook = () => {
+    return null;
+  };
 
   return (
     <Box
@@ -83,12 +94,20 @@ const DetailBook = () => {
           <Typography fontWeight="bold">{selectedBook.num_pages}</Typography>
           <Typography variant="caption">Pages</Typography>
         </Box>
+        <Divider
+          orientation="vertical"
+          sx={{ opacity: 0.6, border: "1px solid white" }}
+        />
         <Box textAlign="center">
           <Typography fontWeight="bold">
             {selectedBook.published_year}
           </Typography>
           <Typography variant="caption">Published Year</Typography>
         </Box>
+        <Divider
+          orientation="vertical"
+          sx={{ opacity: 0.6, border: "1px solid white" }}
+        />
         <Box textAlign="center">
           <Typography fontWeight="bold">
             {selectedBook.ratings_count}
@@ -113,6 +132,7 @@ const DetailBook = () => {
           textTransform: "none",
           fontWeight: "bold",
         }}
+        onClick={() => handleFollowBook()}
       >
         Follow
       </Button>
