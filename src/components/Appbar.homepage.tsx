@@ -65,8 +65,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const AppBarHomePage: React.FC = () => {
   const { data: session } = useSession();
 
-  console.log(session);
-
   return (
     <AppBar
       position="fixed"

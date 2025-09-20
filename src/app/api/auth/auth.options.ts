@@ -23,7 +23,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(`${process.env.DB_HOST}/login`, {
+          const res = await fetch(`${process.env.BACKEND_URL}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({
@@ -36,10 +36,7 @@ export const authOptions: AuthOptions = {
           console.log("Login API response:", data);
 
           if (res.ok && data?.data?.user) {
-            return {
-              ...data.data.user,
-              access_token: data.data.acess_token, // typo backend
-            };
+            return data;
           }
 
           return null;
@@ -68,13 +65,15 @@ export const authOptions: AuthOptions = {
         // }
       }
       if (trigger === "signIn" && account?.provider === "credentials") {
-        //@ts-ignore
-        token.access_token = user.access_token;
+        console.log(user);
 
         //@ts-ignore
-        token.refresh_token = user.refresh_token;
+        token.access_token = user.data.access_token;
+
         //@ts-ignore
-        token.user = user;
+        token.refresh_token = user.data.refreshToken;
+        //@ts-ignore
+        token.user = user.data.user;
       }
       return token;
     },
