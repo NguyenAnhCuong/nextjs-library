@@ -82,7 +82,6 @@ export default function BookLibrary({
               spaceBetween={20}
               slidesPerView={5}
               grid={{ rows: 2, fill: "row" }}
-              navigation
             >
               {books.map((book: FollowBook, index: number) => (
                 <SwiperSlide key={`${book.bookId.title}-${index}`}>

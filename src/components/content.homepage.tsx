@@ -72,7 +72,6 @@ export default function BookContentHomePage({
           spaceBetween={20}
           slidesPerView={5}
           grid={{ rows: 2, fill: "row" }}
-          navigation
         >
           {books.length > 0 &&
             books.map((book: IBook, index: number) => (
