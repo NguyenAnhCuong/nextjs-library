@@ -27,7 +27,7 @@ const DrawerHomePage = (props: any) => {
 
   const itemList = [
     { text: "Discover", icon: <HomeOutlinedIcon />, path: "/" },
-    { text: "My Library", icon: <BookOutlinedIcon />, path: "/library" },
+    { text: "My Library", icon: <BookOutlinedIcon />, path: "/booklibrary" },
     {
       text: "Recommendations",
       icon: <ImportContactsOutlinedIcon />,

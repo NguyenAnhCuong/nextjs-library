@@ -18,6 +18,7 @@ declare global {
   }
 
   interface IBook {
+    _id: string;
     title: string;
     authors: string;
     thumbnail: string;
@@ -29,5 +30,11 @@ declare global {
     subtitle: string;
     num_pages: number;
     ratings_count: number;
+  }
+
+  interface FollowBook {
+    _id: string;
+    userId: string;
+    bookId: IBook;
   }
 }

@@ -9,9 +9,35 @@ import {
   Divider,
 } from "@mui/material";
 import { useBookContext } from "@/app/context/book.context";
+import { sendRequest } from "@/app/api/api";
+import { url } from "inspector";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 const DetailBook = () => {
+  const { data: session } = useSession();
   const { selectedBook } = useBookContext();
+
+  const [isFollowed, setIsFollowed] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!selectedBook?._id || !session?.access_token) return;
+
+    const fetchFollowStatus = async () => {
+      const res = await sendRequest<IBackendRes<boolean>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/follows/check/${selectedBook._id}`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+
+      if (res.data) {
+        setIsFollowed(res.data === true);
+      }
+    };
+
+    setIsFollowed(false);
+    fetchFollowStatus();
+  }, [selectedBook?._id, session?.access_token]);
 
   if (!selectedBook) {
     return (
@@ -35,8 +61,24 @@ const DetailBook = () => {
     );
   }
 
-  const handleFollowBook = () => {
-    return null;
+  const handleFollowBook = async (bookId: string) => {
+    const res = await sendRequest<IBackendRes<any>>({
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/follows`,
+      method: "POST",
+      headers: { Authorization: `Bearer ${session?.access_token}` },
+      body: {
+        bookId,
+      },
+    });
+
+    if (res.error === "Unauthorized") {
+      await signOut();
+      signIn();
+    }
+
+    if (res.data) {
+      setIsFollowed((prev) => !prev); // cập nhật state
+    }
   };
 
   return (
@@ -128,13 +170,13 @@ const DetailBook = () => {
         sx={{
           mt: 3,
           borderRadius: "30px",
-          background: "#2979ff",
+          background: isFollowed ? "red" : "#2979ff",
           textTransform: "none",
           fontWeight: "bold",
         }}
-        onClick={() => handleFollowBook()}
+        onClick={() => handleFollowBook(selectedBook._id)}
       >
-        Follow
+        {isFollowed ? "Unfollow" : "Follow"}
       </Button>
     </Box>
   );

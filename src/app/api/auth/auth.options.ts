@@ -36,7 +36,6 @@ export const authOptions: AuthOptions = {
           );
 
           const data = await res.json();
-          console.log("Login API response:", data);
 
           if (res.ok && data?.data?.user) {
             return data;
@@ -68,8 +67,6 @@ export const authOptions: AuthOptions = {
         // }
       }
       if (trigger === "signIn" && account?.provider === "credentials") {
-        console.log(user);
-
         //@ts-ignore
         token.access_token = user.data.access_token;
 

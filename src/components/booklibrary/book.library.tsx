@@ -17,38 +17,46 @@ import "swiper/css/pagination";
 import "swiper/css/grid";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useBookContext } from "@/app/context/book.context";
 
-export default function RecommendationsBook() {
+export default function BookLibrary({
+  initialData,
+  totalPage,
+}: {
+  initialData: FollowBook[];
+  totalPage: number;
+}) {
+  const { setSelectedBook } = useBookContext();
   const { data: session } = useSession();
   const router = useRouter();
-  const [books, setBooks] = useState<IBook[]>([]);
+  const [books, setBooks] = useState<FollowBook[]>(initialData);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const pageSize = 10;
-
-  const loadMore = async (nextPage: number) => {
-    setIsLoading(true);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/books?current=${nextPage}&pageSize=${pageSize}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await res.json();
-
-    setBooks(data?.data?.result ?? []);
-    setPage(nextPage);
-    setIsLoading(false);
-  };
 
   useEffect(() => {
     if (!session?.user) {
       signIn();
     }
   }, []);
+
+  const loadMore = async (nextPage: number) => {
+    setIsLoading(true);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/follows?current=${nextPage}&pageSize=${pageSize}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
+    setBooks(data?.data?.result ?? []);
+    setPage(nextPage);
+    setIsLoading(false);
+  };
 
   return (
     <Box sx={{ p: 3, bgcolor: "#f9f9fb", minHeight: "100vh" }}>
@@ -63,7 +71,7 @@ export default function RecommendationsBook() {
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" fontWeight="bold">
-            Recommended
+            My Library
           </Typography>
         </Box>
 
@@ -76,30 +84,34 @@ export default function RecommendationsBook() {
               grid={{ rows: 2, fill: "row" }}
               navigation
             >
-              {books.map((book: IBook, index: number) => (
-                <SwiperSlide key={`${book.title}-${index}`}>
+              {books.map((book: FollowBook, index: number) => (
+                <SwiperSlide key={`${book.bookId.title}-${index}`}>
                   <Card
                     sx={{
                       borderRadius: 3,
                       boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      "&:hover": {
+                        cursor: "pointer",
+                      },
                     }}
+                    onClick={() => setSelectedBook(book.bookId)}
                   >
                     <CardMedia
                       component="img"
                       height="180"
-                      image={book.thumbnail}
-                      alt={book.title}
+                      image={book.bookId.thumbnail}
+                      alt={book.bookId.title}
                     />
                     <CardContent>
                       <Typography variant="body2" noWrap>
-                        {book.title}
+                        {book.bookId.title}
                       </Typography>
                       <Typography
                         variant="caption"
                         color="text.secondary"
                         noWrap
                       >
-                        {book.authors}
+                        {book.bookId.authors}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -129,6 +141,7 @@ export default function RecommendationsBook() {
                   loading={isLoading}
                   sx={{ width: 100 }}
                   onClick={() => loadMore(page + 1)}
+                  disabled={page === totalPage}
                   variant="contained"
                 >
                   Next
@@ -145,7 +158,7 @@ export default function RecommendationsBook() {
               height="100%"
             >
               <Typography variant="body2" color="text.secondary">
-                No recommendations available
+                No Book available
               </Typography>
             </Box>
           </>
