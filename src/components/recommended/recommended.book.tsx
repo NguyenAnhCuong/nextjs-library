@@ -17,11 +17,19 @@ import "swiper/css/pagination";
 import "swiper/css/grid";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useBookContext } from "@/app/context/book.context";
 
-export default function RecommendationsBook() {
+export default function RecommendationsBook({
+  initialData,
+  totalPage,
+}: {
+  initialData: IBook[];
+  totalPage: number;
+}) {
   const { data: session } = useSession();
+  const { setSelectedBook } = useBookContext();
   const router = useRouter();
-  const [books, setBooks] = useState<IBook[]>([]);
+  const [books, setBooks] = useState<IBook[]>(initialData);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const pageSize = 10;
@@ -29,13 +37,14 @@ export default function RecommendationsBook() {
   const loadMore = async (nextPage: number) => {
     setIsLoading(true);
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/books?current=${nextPage}&pageSize=${pageSize}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/follows/recommend?current=${nextPage}&pageSize=${pageSize}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.access_token}`,
         },
-      }
+      },
     );
     const data = await res.json();
 
@@ -82,7 +91,11 @@ export default function RecommendationsBook() {
                     sx={{
                       borderRadius: 3,
                       boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      "&:hover": {
+                        cursor: "pointer",
+                      },
                     }}
+                    onClick={() => setSelectedBook(book)}
                   >
                     <CardMedia
                       component="img"
@@ -105,7 +118,7 @@ export default function RecommendationsBook() {
                   </Card>
                 </SwiperSlide>
               ))}
-              <Box
+              {/* <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -129,11 +142,12 @@ export default function RecommendationsBook() {
                   loading={isLoading}
                   sx={{ width: 100 }}
                   onClick={() => loadMore(page + 1)}
+                  disabled={page === totalPage}
                   variant="contained"
                 >
                   Next
                 </Button>
-              </Box>
+              </Box> */}
             </Swiper>
           </>
         ) : (
