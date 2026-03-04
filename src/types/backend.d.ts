@@ -25,7 +25,7 @@ declare global {
   interface IBackendRes<T = unknown> {
     error?: string | string[];
     message: string;
-    statusCode: number | string;
+    statusCode: number;
     data?: T;
   }
 

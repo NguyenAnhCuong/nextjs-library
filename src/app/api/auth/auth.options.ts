@@ -32,7 +32,7 @@ export const authOptions: AuthOptions = {
                 username: credentials?.username || "",
                 password: credentials?.password || "",
               }),
-            }
+            },
           );
 
           const data = await res.json();
@@ -67,12 +67,12 @@ export const authOptions: AuthOptions = {
         // }
       }
       if (trigger === "signIn" && account?.provider === "credentials") {
-        //@ts-ignore
+        //@ts-expect-error
         token.access_token = user.data.access_token;
 
-        //@ts-ignore
+        //@ts-expect-error
         token.refresh_token = user.data.refreshToken;
-        //@ts-ignore
+        //@ts-expect-error
         token.user = user.data.user;
       }
       return token;
