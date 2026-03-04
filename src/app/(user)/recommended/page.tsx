@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 const RecommendationsPage = async () => {
   const session = await getServerSession(authOptions);
 
-  const res = await sendRequest<IBackendRes<IPaginatedResponse<IBook>>>({
+  const res = await sendRequest<IBackendRes<IPaginatedResponse<IFollowBook>>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/follows?current=1&pageSize=10`,
     method: "GET",
     headers: {
@@ -14,7 +14,7 @@ const RecommendationsPage = async () => {
     },
   });
 
-  const books: IBook[] = res?.data?.result ?? [];
+  const books: IFollowBook[] = res?.data?.result ?? [];
   const totalPage: number = res?.data?.meta?.pages ?? 1;
 
   return <RecommendationsBook initialData={books} totalPage={totalPage} />;

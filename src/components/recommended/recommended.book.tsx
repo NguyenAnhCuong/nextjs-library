@@ -16,13 +16,13 @@ export default function RecommendationsBook({
   initialData,
   totalPage,
 }: {
-  initialData: IBook[];
+  initialData: IFollowBook[];
   totalPage: number;
 }) {
   const { data: session } = useSession();
   const { setSelectedBook } = useBookContext();
   const router = useRouter();
-  const [books, setBooks] = useState<IBook[]>(initialData);
+  const [books, setBooks] = useState<IFollowBook[]>(initialData);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const pageSize = 10;
@@ -78,8 +78,8 @@ export default function RecommendationsBook({
               grid={{ rows: 2, fill: "row" }}
               navigation
             >
-              {books.map((book: IBook, index: number) => (
-                <SwiperSlide key={`${book.title}-${index}`}>
+              {books.map((book: IFollowBook, index: number) => (
+                <SwiperSlide key={`${book.bookId.title}-${index}`}>
                   <Card
                     sx={{
                       borderRadius: 3,
@@ -88,24 +88,24 @@ export default function RecommendationsBook({
                         cursor: "pointer",
                       },
                     }}
-                    onClick={() => setSelectedBook(book)}
+                    onClick={() => setSelectedBook(book.bookId)}
                   >
                     <CardMedia
                       component="img"
                       height="180"
-                      image={book.thumbnail}
-                      alt={book.title}
+                      image={book.bookId.thumbnail}
+                      alt={book.bookId.title}
                     />
                     <CardContent>
                       <Typography variant="body2" noWrap>
-                        {book.title}
+                        {book.bookId.title}
                       </Typography>
                       <Typography
                         variant="caption"
                         color="text.secondary"
                         noWrap
                       >
-                        {book.authors}
+                        {book.bookId.authors}
                       </Typography>
                     </CardContent>
                   </Card>
