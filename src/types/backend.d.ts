@@ -4,13 +4,14 @@ declare global {
   interface IRequest {
     url: string;
     method: string;
-    body?: { [key: string]: any };
-    queryParams?: any;
+    body?: Record<string, unknown>;
+    queryParams?: Record<string, string | number | boolean | undefined>;
     useCredentials?: boolean;
-    headers?: any;
-    nextOption?: any;
+    headers?: Record<string, string>;
+    nextOption?: RequestInit;
   }
-  interface IBackendRes<T> {
+
+  interface IBackendRes<T = unknown> {
     error?: string | string[];
     message: string;
     statusCode: number | string;
@@ -29,10 +30,9 @@ declare global {
     categories: string[];
     subtitle: string;
     num_pages: number;
-    ratings_count: number;
   }
 
-  interface FollowBook {
+  interface IFollowBook {
     _id: string;
     userId: string;
     bookId: IBook;

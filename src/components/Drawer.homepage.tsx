@@ -19,7 +19,6 @@ import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import path from "path";
 import Link from "next/link";
 
 const DrawerHomePage = (props: any) => {

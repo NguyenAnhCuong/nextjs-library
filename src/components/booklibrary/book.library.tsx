@@ -23,13 +23,13 @@ export default function BookLibrary({
   initialData,
   totalPage,
 }: {
-  initialData: FollowBook[];
+  initialData: IFollowBook[];
   totalPage: number;
 }) {
   const { setSelectedBook } = useBookContext();
   const { data: session } = useSession();
   const router = useRouter();
-  const [books, setBooks] = useState<FollowBook[]>(initialData);
+  const [books, setBooks] = useState<IFollowBook[]>(initialData);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const pageSize = 10;
@@ -50,7 +50,7 @@ export default function BookLibrary({
           Authorization: `Bearer ${session?.access_token}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     const data = await res.json();
     setBooks(data?.data?.result ?? []);
@@ -83,7 +83,7 @@ export default function BookLibrary({
               slidesPerView={5}
               grid={{ rows: 2, fill: "row" }}
             >
-              {books.map((book: FollowBook, index: number) => (
+              {books.map((book: IFollowBook, index: number) => (
                 <SwiperSlide key={`${book.bookId.title}-${index}`}>
                   <Card
                     sx={{

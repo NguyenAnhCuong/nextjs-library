@@ -1,7 +1,6 @@
 import { sendRequest } from "@/app/api/api";
 import { authOptions } from "@/app/api/auth/auth.options";
 import BookLibrary from "@/components/booklibrary/book.library";
-import next from "next";
 import { getServerSession } from "next-auth";
 
 const LibraryPage = async () => {
