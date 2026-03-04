@@ -47,18 +47,18 @@ const DrawerHomePage = () => {
     {
       text: "Favorites",
       icon: <FavoriteBorderOutlinedIcon />,
-      path: "/favorites",
+      path: "#",
     },
     {
       text: "Download",
       icon: <SimCardDownloadOutlinedIcon />,
-      path: "/download",
+      path: "#",
     },
   ];
 
   const secondaryMenu: MenuItem[] = [
-    { text: "Setting", icon: <SettingsRoundedIcon />, path: "/settings" },
-    { text: "Support", icon: <SupportAgentRoundedIcon />, path: "/support" },
+    { text: "Setting", icon: <SettingsRoundedIcon />, path: "#" },
+    { text: "Support", icon: <SupportAgentRoundedIcon />, path: "#" },
     { text: "Logout", icon: <LogoutSharpIcon />, onClick: () => signOut() },
   ];
 

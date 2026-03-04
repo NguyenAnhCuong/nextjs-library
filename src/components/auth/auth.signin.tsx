@@ -123,6 +123,7 @@ const AuthSignIn = (props: unknown) => {
               fullWidth
               label="Password"
               name="password"
+              type={showPassword ? "text" : "password"}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSubmit();
