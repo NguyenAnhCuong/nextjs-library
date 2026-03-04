@@ -1,6 +1,17 @@
 export {};
 
 declare global {
+  interface IPaginationMeta {
+    pages: number;
+    total: number;
+    page: number;
+    pageSize: number;
+  }
+
+  interface IPaginatedResponse<T> {
+    result: T[];
+    meta: IPaginationMeta;
+  }
   interface IRequest {
     url: string;
     method: string;

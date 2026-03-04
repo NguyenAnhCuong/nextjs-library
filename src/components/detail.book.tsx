@@ -62,7 +62,7 @@ const DetailBook = () => {
   }
 
   const handleFollowBook = async (bookId: string) => {
-    const res = await sendRequest<IBackendRes<any>>({
+    const res = await sendRequest<IBackendRes<unknown>>({
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/follows`,
       method: "POST",
       headers: { Authorization: `Bearer ${session?.access_token}` },

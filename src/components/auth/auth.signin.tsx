@@ -25,7 +25,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const AuthSignIn = (props: any) => {
+const AuthSignIn = (props: unknown) => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [resMessage, setResMessage] = useState<string>("");

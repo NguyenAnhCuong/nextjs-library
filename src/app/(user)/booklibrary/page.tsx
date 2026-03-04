@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 const LibraryPage = async () => {
   const session = await getServerSession(authOptions);
 
-  const res = await sendRequest<IBackendRes<any>>({
+  const res = await sendRequest<IBackendRes<IPaginatedResponse<IFollowBook>>>({
     url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/follows?current=1&pageSize=10`,
     method: "GET",
     headers: {
@@ -14,8 +14,8 @@ const LibraryPage = async () => {
     },
   });
 
-  const books = res?.data?.result ?? [];
-  const totalPage = res?.data?.meta.pages;
+  const books: IFollowBook[] = res?.data?.result ?? [];
+  const totalPage: number = res?.data?.meta?.pages ?? 1;
 
   return <BookLibrary initialData={books} totalPage={totalPage} />;
 };

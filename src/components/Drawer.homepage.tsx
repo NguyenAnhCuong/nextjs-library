@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
@@ -8,6 +9,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Box, Typography } from "@mui/material";
+
 import BusinessSharpIcon from "@mui/icons-material/BusinessSharp";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
@@ -17,14 +19,24 @@ import SimCardDownloadOutlinedIcon from "@mui/icons-material/SimCardDownloadOutl
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
-import { signOut } from "next-auth/react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 
-const DrawerHomePage = (props: any) => {
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
+
+type MenuItem = {
+  text: string;
+  icon: React.ReactNode;
+  path?: string;
+  onClick?: () => void;
+};
+
+const drawerWidth = 280;
+
+const DrawerHomePage = () => {
   const pathname = usePathname();
 
-  const itemList = [
+  const mainMenu: MenuItem[] = [
     { text: "Discover", icon: <HomeOutlinedIcon />, path: "/" },
     { text: "My Library", icon: <BookOutlinedIcon />, path: "/booklibrary" },
     {
@@ -44,82 +56,75 @@ const DrawerHomePage = (props: any) => {
     },
   ];
 
-  const itemList2 = [
+  const secondaryMenu: MenuItem[] = [
     { text: "Setting", icon: <SettingsRoundedIcon />, path: "/settings" },
     { text: "Support", icon: <SupportAgentRoundedIcon />, path: "/support" },
-    {
-      text: "Logout",
-      icon: <LogoutSharpIcon />,
-      onClick: () => signOut(),
-    },
+    { text: "Logout", icon: <LogoutSharpIcon />, onClick: () => signOut() },
   ];
 
-  return (
-    <>
-      <Drawer
-        variant="permanent"
-        anchor="left"
-        sx={{
-          width: "20vw", // set width ở đây
-          "& .MuiDrawer-paper": {
-            width: "20vw", // set width ở đây
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Box
+  const renderMenuItem = (item: MenuItem) => {
+    const isActive = item.path && pathname === item.path;
+
+    return (
+      <ListItem key={item.text} disablePadding>
+        <ListItemButton
+          component={item.path ? Link : "button"}
+          href={item.path}
+          onClick={item.onClick}
           sx={{
-            height: "100px",
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "center",
+            backgroundColor: isActive ? "#b7bcf8ff" : "transparent",
+            "&:hover": {
+              backgroundColor: "#d3d6fc",
+            },
           }}
         >
-          <Link
-            href={"/"}
-            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-          >
-            <BusinessSharpIcon fontSize="large" color="primary" />
-            <Typography fontSize="24px" sx={{ ml: "5px" }}>
-              BookBase
-            </Typography>
-          </Link>
-        </Box>
-        <Box role="presentation" sx={{ width: "100%" }}>
-          <List>
-            {itemList.map((item: any, index: number) => (
-              <Link href={item.path} key={`${item.text}-${index}`}>
-                <ListItem
-                  sx={
-                    pathname === item.path
-                      ? { backgroundColor: "#b7bcf8ff" }
-                      : {}
-                  }
-                  key={item.text}
-                  disablePadding
-                >
-                  <ListItemButton onClick={item.onClick}>
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.text} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {itemList2.map((item: any, index: number) => (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton onClick={item.onClick}>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
-    </>
+          <ListItemIcon>{item.icon}</ListItemIcon>
+          <ListItemText primary={item.text} />
+        </ListItemButton>
+      </ListItem>
+    );
+  };
+
+  return (
+    <Drawer
+      variant="permanent"
+      anchor="left"
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          boxSizing: "border-box",
+        },
+      }}
+    >
+      {/* Logo Section */}
+      <Box
+        sx={{
+          height: 100,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Link
+          href="/"
+          style={{ display: "flex", alignItems: "center", gap: 8 }}
+        >
+          <BusinessSharpIcon fontSize="large" color="primary" />
+          <Typography fontSize="24px" fontWeight={600}>
+            BookBase
+          </Typography>
+        </Link>
+      </Box>
+
+      {/* Main Menu */}
+      <Box sx={{ flexGrow: 1 }}>
+        <List>{mainMenu.map(renderMenuItem)}</List>
+        <Divider />
+        <List>{secondaryMenu.map(renderMenuItem)}</List>
+      </Box>
+    </Drawer>
   );
 };
 

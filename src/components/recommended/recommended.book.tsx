@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Grid } from "swiper/modules";
